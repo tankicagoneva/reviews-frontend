@@ -29,7 +29,7 @@ export default function SiteHeader() {
       <nav className="categories">
         <span>Filter reviews by category:</span>
         {data.categories.data.map((category) => (
-          <Link key={category.id} to={`/category/${category.id}`}>
+          <Link key={category.id} to={`/categories/${category.id}`}>
             {category.attributes.name}
           </Link>
         ))}
