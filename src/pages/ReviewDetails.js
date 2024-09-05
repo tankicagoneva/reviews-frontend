@@ -26,6 +26,8 @@ const REVIEW = gql`
   }
 `;
 
+
+
 export default function ReviewDetails() {
   const { id } = useParams();
   const { loading, error, data } = useQuery(REVIEW, {
@@ -47,11 +49,17 @@ export default function ReviewDetails() {
       ))}
 
       <ReactMarkdown>
-        {reviewData.attributes.body
-          .map((paragraph) =>
-            paragraph.children.map((text) => text.text).join(" "),
-          )
-          .join("\n")}
+        {reviewData.attributes.body.map((node) => {
+      if (node.type === 'paragraph') {
+        return node.children.map((child) => child.text).join(' ');
+      } else if (node.type === 'image') {
+        const imageUrl = node.image.url;
+        const altText = node.image.alternativeText || 'Image';
+        return `![${altText}](${imageUrl})`; 
+      }
+      return '';
+    })
+    .join('\n\n')}
       </ReactMarkdown>
     </div>
   );
